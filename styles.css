@@ -1,0 +1,83 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: indigo;
+  color: #fff;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.game-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  height: 100vh;
+  width: 100vh;
+}
+
+canvas {
+  border: 4px solid #ff6600;
+  border-radius: 8px;
+  background-color: #feff9d;
+}
+
+.btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin: 0 auto;
+  width: 100%;
+}
+
+button {
+  background-color: #feff9d;
+  border-radius: 8px;
+  border-color: #ff6600;
+  font-family: inherit;
+  margin: 0;
+  padding: 5px 20px;
+  width: 100px;
+}
+
+button:not(:last-child) {
+  margin-right: 10px;
+}
+
+.messages {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 460px;
+}
+
+p {
+  display: block;
+  margin: 0;
+  width: 100%;
+}
+
+@media (max-width: 440px) {
+  button {
+    margin-top: 25px;
+  }
+  #up, #down {
+    margin-left: 100%;
+    margin-right: 100%;
+  }
+}
