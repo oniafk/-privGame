@@ -13,16 +13,18 @@ body{
     font-family: $mainFont;
 }
 
-.game-container{
+.game-container{    
+    margin-top: 10vh;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    height: 100vh;
-    width: 100vh;
+    height: 100%;
+    width: 100%;
 }
 
-canvas{
+
+canvas{    
     border: 4px solid $orange;
     border-radius: 8px;
     background-color: $yellow;
