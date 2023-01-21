@@ -4,7 +4,7 @@ const game = canvas.getContext('2d');
 let canvasSize;
 let elementSize;
 
-window.addEventListener('load', startGame);
+window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
 function setCanvasSize() {
@@ -28,8 +28,14 @@ function startGame() {
     game.font = elementSize + 'px verdana';
     game.textAlign = 'end';
 
-    for (let i = 1; i <= 10 ; i++) {
-        game.fillText(emojis['X'], elementSize * i, elementSize);        
+    let map = maps [1];
+    let mapRows = map.trim().split('\n');
+    let mapRowToCol = mapRows.map(row => row.trim().split(''));
+
+    for (let  row = 1;  row <= 10 ; row ++) {       
+        for (let col = 1; col <= 10; col++) {
+            game.fillText(emojis[mapRowToCol [row -1] [col -1]], elementSize * col, elementSize * row)
+        }        
     }
     
 };
