@@ -7,6 +7,7 @@ const btnDown = document.querySelector('#down');
 
 let canvasSize;
 let elementSize;
+let level = 0;
 
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
@@ -15,6 +16,13 @@ let playerPosition = {
     X: undefined,
     Y: undefined,
 }
+
+let giftPosition = {
+    X: undefined,
+    Y: undefined,
+}
+
+let bombPositions = [];
 
 document.onkeydown = checkKey;
 btnUp.addEventListener('click', moveUp);
@@ -45,9 +53,11 @@ function startGame() {
     game.font = elementSize + 'px verdana';
     game.textAlign = 'end';
 
-    let map = maps [2];
+    let map = maps [level];
     let mapRows = map.trim().split('\n');
     let mapRowToCol = mapRows.map(row => row.trim().split(''));
+
+    bombPositions = [];
 
     game.clearRect(0,0,canvasSize,canvasSize);
 
@@ -58,31 +68,47 @@ function startGame() {
             let posY = elementSize * (rowIndex + 1);        
             let emoji = emojis [col];
 
+            let bombPosition = {
+                x: undefined,
+                y: undefined,
+            }
+          
             if (col == 'O') {
                 if(!playerPosition.X && !playerPosition.Y){
                     playerPosition.X = posX;
                     playerPosition.Y = posY;
                 };
-            };
+            } else if (col == 'I') {
+                giftPosition.X = posX;
+                giftPosition.Y = posY;
+            } else if (col == 'X') {
+                bombPosition.x = posX;
+                bombPosition.y = posY;
 
+                bombPositions.push(bombPosition);
+            
+            }            
+           
             game.fillText(emoji, posX, posY);
 
         });
+        
     });      
-    
-    movePLayer();
+   
+    console.log(bombPositions);
+   movePLayer()    
 };
 
 //moving
 
 function movePLayer () {
+
+    collisionGift();
     game.fillText(emojis ['PLAYER'], playerPosition.X, playerPosition.Y);
+    bombCollision();
+    
 };
 
-function cleanCanvas() {
-    game.crearRect(playerPosition.X, playerPosition.Y)
-}
- 
 
 function checkKey (event) {
     event = event || window.event;
@@ -93,28 +119,82 @@ function checkKey (event) {
 };
 
 function moveUp() {
-    console.log('up')
-    playerPosition.Y -= elementSize;
-    startGame()
-
+    if ((playerPosition.Y - elementSize) < elementSize) {
+        console.log('OUT')
+    } else {
+        console.log('up', playerPosition)
+        playerPosition.Y -= elementSize;
+        startGame()
+    };
+   
 };
 
 function moveLeft() {
-    console.log('left')
-    playerPosition.X -= elementSize;
-    startGame()
+    if ((playerPosition.X - elementSize) < elementSize) {
+        console.log('OUT')
+    } else {
+        console.log('left', playerPosition)
+        playerPosition.X -= elementSize;
+        startGame()
+    };   
+   
 };
 
 function moveRight() {
-    console.log('right')
+    if ((playerPosition.X + elementSize) > canvasSize) {
+        console.log('OUT')
+    } else {
+        console.log('right', playerPosition)
     playerPosition.X += elementSize;
     startGame()
-
+    };  
+   
 };
 
 function moveDown() {
-    console.log('down')
-    playerPosition.Y += elementSize;
-    startGame()
+    if ((playerPosition.Y + elementSize) > canvasSize) {
+        console.log('OUT')
+    } else {
+        console.log('down', playerPosition)
+        playerPosition.Y += elementSize;
+        startGame()
+    }; 
+   
+};
+
+// collisions 
+
+function collisionGift () {
+
+    let collisionX = playerPosition.X.toFixed(3) == giftPosition.X.toFixed(3);
+    let collisionY = playerPosition.Y.toFixed(3) == giftPosition.Y.toFixed(3);
+    let collisionPG = collisionX && collisionY;
+
+    console.log(collisionX);
+    console.log(collisionY);
+
+    if (collisionPG) {
+        levelUp();       
+    };
+}
+
+function bombCollision() {
+
+    let bombColl = bombPositions.find( bomb => {
+        let collisionX = playerPosition.X == bomb.x;
+        let collisionY = playerPosition.Y == bomb.y;
+        return collisionX && collisionY;
+    })
+
+    if (bombColl) {
+        console.log('booommmmmmmmmmmmmmmmmmm');
+        game.fillText(emojis ['BOMB_COLLISION'], playerPosition.X, playerPosition.Y)
+    }
 
 };
+
+//change level
+
+function levelUp () {
+    level ++
+}
