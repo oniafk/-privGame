@@ -4,6 +4,7 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
+const spanLives = document.querySelector('#lives')
 
 let canvasSize;
 let elementSize;
@@ -61,6 +62,8 @@ function startGame() {
         console.log( 'go study, stop wasting time dude >:( ')
         return;
     }
+
+    showLives();
 
     console.log(lives);
     let mapRows = map.trim().split('\n');
@@ -227,4 +230,13 @@ function levelUp () {
 
 function levelLose () {
     lives--;    
+}
+
+//interface
+
+function showLives () {
+    const hearsArray = Array(lives).fill(emojis['HEART']);
+
+    spanLives.innerHTML = "";
+    hearsArray.forEach(heart => spanLives.append(heart));
 }
