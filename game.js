@@ -4,12 +4,20 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
-const spanLives = document.querySelector('#lives')
+const spanLives = document.querySelector('#lives');
+const spanTimer = document.querySelector('#timer');
+const spanRecord = document.querySelector('#record');
+const pResult = document.querySelector('#pResult');
+
 
 let canvasSize;
 let elementSize;
 let level = 0;
 let lives = 3;
+
+let timeStart;
+let timePlayer;
+let timeInterval;
 
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
@@ -38,9 +46,9 @@ btnDown.addEventListener('click', moveDown);
 function setCanvasSize() {
 
     if (window.innerHeight > window.innerWidth) {
-        canvasSize = window.innerWidth * 0.75;
+        canvasSize = window.innerWidth * 0.7;
     } else {
-        canvasSize = window.innerHeight * 0.75;
+        canvasSize = window.innerHeight * 0.7;
     }
 
     canvas.setAttribute('width', canvasSize);
@@ -48,6 +56,9 @@ function setCanvasSize() {
 
     elementSize = canvasSize / 10;
 
+    playerPosition.X = undefined;
+    playerPosition.Y = undefined;
+    
     startGame();
 };
 
@@ -59,8 +70,15 @@ function startGame() {
     let map = maps [level];
 
     if(!map){
+        winGame();
         console.log( 'go study, stop wasting time dude >:( ')
         return;
+    }
+
+    if(!timeStart) {
+        timeStart = Date.now();
+        timeInterval = setInterval(showTime, 100);
+        showRecord();
     }
 
     showLives();
@@ -199,8 +217,8 @@ function collisionGift () {
 function bombCollision() {
 
     let bombColl = bombPositions.find( bomb => {
-        let collisionX = playerPosition.X == bomb.x;
-        let collisionY = playerPosition.Y == bomb.y;
+        let collisionX = playerPosition.X.toFixed(3) == bomb.x.toFixed(3);
+        let collisionY = playerPosition.Y.toFixed(3) == bomb.y.toFixed(3);
         return collisionX && collisionY;
     })
 
@@ -216,6 +234,7 @@ function bombCollision() {
             playerPosition.Y = undefined;
             lives = 3;
             level = 0;
+            timeStart = undefined;
             startGame();
         } 
     }    
@@ -226,12 +245,33 @@ function bombCollision() {
 function levelUp () {
     level++;
     startGame();
-}
+};
 
 function levelLose () {
     lives--;    
-}
+};
 
+function winGame() {
+    console.log('¡Terminaste el juego!');
+    clearInterval(timeInterval);
+  
+    const recordTime = localStorage.getItem('record_time');
+    const playerTime = Date.now() - timeStart;   
+  
+    if (recordTime) {        
+         if (recordTime >= playerTime) {
+                localStorage.setItem('record_time', playerTime);
+                pResult.innerHTML = 'SUPERASTE EL RECORD :)'
+             } else {
+                pResult.innerHTML = 'lo siento, no superaste el records :(';
+             }
+         } else {
+        localStorage.setItem('record_time', playerTime);
+        pResult.innerHTML = 'Primera vez? Muy bien, pero ahora trata de superar tu tiempo :)';
+    }
+  
+    console.log({recordTime, playerTime});
+}
 //interface
 
 function showLives () {
@@ -239,4 +279,12 @@ function showLives () {
 
     spanLives.innerHTML = "";
     hearsArray.forEach(heart => spanLives.append(heart));
+};
+
+function showTime() {
+    spanTimer.innerHTML = Date.now() - timeStart;
+};
+
+function showRecord () {
+    spanRecord.innerHTML = localStorage.getItem('record_time');
 }
