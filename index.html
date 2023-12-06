@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <title>mini game with maps and skulls 💀🚩</title>
   </head>
-  <body> 
-    <div class="game-container"> 
+  <body>
+    <div class="game-container">
       <canvas id="game"></canvas>
-      <div class="buttons-container btns"> 
+      <div class="buttons-container btns">
         <button id="up">up</button>
         <button id="left">left</button>
-        <button id="right">right </button>
-        <button id="down">down </button>
+        <button id="right">right</button>
+        <button id="down">down</button>
+        <button id="restart">restart</button>
       </div>
-      <div class="messages"> 
+      <div class="messages">
         <p>Lives:<span id="lives"></span></p>
         <p>Time: ⏲️ <span id="timer"></span></p>
         <p>Record:<span id="record"></span></p>
@@ -24,6 +25,6 @@
       </div>
     </div>
     <script src="./maps.js"></script>
-    <script src="./game.js"> </script>
+    <script src="./game.js"></script>
   </body>
 </html>
